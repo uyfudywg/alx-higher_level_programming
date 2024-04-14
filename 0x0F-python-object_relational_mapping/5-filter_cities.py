@@ -1,41 +1,35 @@
 #!/usr/bin/python3
-"""
-Listing all states from the database hbtn_0e_0_usa
-"""
+'''
+script that takes in the name of a state as an argument and lists all cities
+'''
 
+import MySQLdb
+import sys
 
-def main():
-    """
-    List 'states' table of 'hbtn_0e_0_usa' database in ascending
-    order by id's
-    """
-    import MySQLdb
-    from sys import argv
+if __name__ == '__main__':
+    db = MySQLdb.connect(
+        user=sys.argv[1],
+        passwd=sys.argv[2],
+        db=sys.argv[3],
+        port=3306,
+        host='localhost')
 
-    usr = str(argv[1])
-    pasw = str(argv[2])
-    db_name = str(argv[3])
-    state_name = str(argv[4])
-
-    db = MySQLdb.connect(host='localhost', port=3306,
-                         user=usr, passwd=pasw, db=db_name)
     cursor = db.cursor()
+    cursor.execute(
+        'SELECT cities.name FROM cities\
+        INNER JOIN states ON cities.state_id = states.id\
+        WHERE states.name = %s \
+        ORDER BY cities.id ASC', (sys.argv[4], ))
 
-    cursor.execute("SELECT cities.name\
-                    FROM cities\
-                    JOIN states\
-                    ON cities.state_id=states.id\
-                    WHERE states.name = %s;", (state_name, ))
+    cities = cursor.fetchall()
 
-    rows = cursor.fetchall()
-    cities = []
-    for row in rows:
-        cities.append(str(row[0]))
-    print(', '.join(cities))
+    idx = 0
+    for city in cities:
+        if idx != 0:
+            print(", ", end="")
+        print("%s" % city, end="")
+        idx += 1
+    print("")
 
     cursor.close()
     db.close()
-
-
-if __name__ == '__main__':
-    main()
