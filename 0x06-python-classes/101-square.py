@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 """ Class Square that defines a square by
     Private instance attribute: size
-    Private instance attirubute: position
+    Private instance attirubutee: position
     Getter and Setters
     Instantiation with optional size
     size must be an integer
