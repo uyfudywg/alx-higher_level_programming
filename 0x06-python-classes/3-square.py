@@ -2,7 +2,7 @@
 """ Class Square that defines a square by
     Private instance attribute: size
     Instantiation with optional size
-    size must be an integer
+    size must be an integer...
 """
 
 
